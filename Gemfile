@@ -10,6 +10,7 @@ gem 'sqlite3'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'sidekiq', '~> 3.3.4'
+gem 'figaro', '~> 1.1.1'
 
 group :development, :test do
   gem 'byebug'
