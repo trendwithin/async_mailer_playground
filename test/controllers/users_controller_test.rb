@@ -20,8 +20,22 @@ class UsersControllerTest < ActionController::TestCase
     assert_difference('User.count') do
       post :create, user: { email: @user.email, name: @user.name }
     end
-
     assert_redirected_to user_path(assigns(:user))
+  end
+
+  test "should enqueue email to deliver later" do
+    assert_enqueued_jobs 1 do
+      post :create, user: { email: @user.email, name: @user.name }
+    end
+  end
+
+  test 'email is delivered with expected content' do
+  perform_enqueued_jobs do
+    post :create, user: { email: @user.email, name: @user.name }
+    delivered_email = ActionMailer::Base.deliveries.last
+
+    assert_includes delivered_email.to, @user.email
+    end
   end
 
   test "should show user" do
